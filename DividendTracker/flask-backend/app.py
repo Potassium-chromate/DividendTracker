@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from user import UserAPI
 import sqlite3
 
 app = Flask(__name__)
+user_api = UserAPI(app)
 CORS(app)  # Allow frontend to access API
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dividends.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
