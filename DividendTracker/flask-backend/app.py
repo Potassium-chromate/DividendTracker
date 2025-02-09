@@ -11,7 +11,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 class Dividend(db.Model):
-    id = db.Column(db.String(10), primary_key=True)
+    ID = db.Column(db.Integer, primary_key=True)
+    stock_id = db.Column(db.String(10), nullable=False)
     stock = db.Column(db.String(100), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     date = db.Column(db.String(10), nullable=False)
@@ -19,7 +20,13 @@ class Dividend(db.Model):
 @app.route("/api/dividends", methods=["GET"])
 def get_dividends():
     dividends = Dividend.query.all()
-    return jsonify([{"id": d.id, "stock": d.stock, "amount": d.amount, "date": d.date} for d in dividends])
+    return jsonify([{
+        "ID": d.ID, 
+        "stock_id": d.stock_id, 
+        "stock": d.stock, 
+        "amount": d.amount, 
+        "date": d.date} 
+        for d in dividends])
 
 @app.route("/api/save_dividends", methods=["POST"])
 def save_dividends():
@@ -32,7 +39,8 @@ def save_dividends():
         db.session.query(Dividend).delete()  # Clear existing data
         for item in data["dividends"]:
             new_dividend = Dividend(
-                id=item["id"],
+                ID=item["ID"],
+                stock_id=item["stock_id"],
                 stock=item["stock"],
                 amount=item["amount"],
                 date=item["date"]

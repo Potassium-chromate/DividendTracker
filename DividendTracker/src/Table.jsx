@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Table.css"
+import "./Modal.css"
 
 function CreateTable() {
     const [dividends, setDividends] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
 
     useEffect(() => {
         axios.get("http://127.0.0.1:5001/api/dividends")
@@ -12,25 +13,14 @@ function CreateTable() {
             .catch(error => console.error("Error fetching data:", error));
     }, []);
 
-    const saveData = () => {
-        axios.post("http://127.0.0.1:5001/api/save_dividends", { dividends })
-            .then(response => {
-                console.log("Data saved successfully:", response.data);
-                alert("Dividends saved to the database!");
-            })
-            .catch(error => console.error("Error saving data:", error));
-    };
-
     return (
         <>
             <h1>Dividend Table</h1>
-            <button onClick={() => setShowModal(true)}>+</button>
-            <button onClick={saveData}>Save</button> {/* Save button */}
-
+            <div className="horizontal_line"></div>
             {/* Modal to Add New Row */}
             <ShowInputModal
-                showModal={showModal}
-                setShowModal={setShowModal}
+                showModal={showAddModal}
+                setShowModal={setShowAddModal}
                 dividends={dividends}
                 setDividends={setDividends}
             />
@@ -39,18 +29,30 @@ function CreateTable() {
             <CreateTableList
                 dividends={dividends}
                 setDividends={setDividends}
+                setShowAddModal={setShowAddModal}
             />
         </>
     );
 }
 
-function CreateTableList({ dividends, setDividends }) {
-    const [showModal, setShowModal] = useState(false);
+function CreateTableList({ dividends, setDividends, setShowAddModal}) {
+    const [showSaveModal, setShowSavaModal] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(null); // Store the row index to delete
+
+    const saveData = () => {
+        axios.post("http://127.0.0.1:5001/api/save_dividends", { dividends })
+            .then(response => {
+                console.log("Data saved successfully:", response.data);
+                alert("Dividends saved to the database!");
+            })
+            .catch(error => {
+                alert("Error saving data");
+                console.error("Error saving data:", error);});
+    };
 
     const DeleteRow = (rowIndex) => {
         setRowToDelete(rowIndex); // Store the row index
-        setShowModal(true); // Show confirmation modal
+        setShowSavaModal(true); // Show confirmation modal
     };
 
     const ConfirmDelete = () => {
@@ -58,63 +60,85 @@ function CreateTableList({ dividends, setDividends }) {
             setDividends(dividends.filter((_, index) => index !== rowToDelete));
             setRowToDelete(null); // Reset the state
         }
-        setShowModal(false);
+        setShowSavaModal(false);
     };
 
     return (
         <>
             <ShowConfirmModal
-                showModal={showModal}
-                setShowModal={setShowModal}
+                showModal={showSaveModal}
+                setShowModal={setShowSavaModal}
                 ConfirmDelete={ConfirmDelete}
             />
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Stock</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {dividends.map((div, div_index) => (
-                        <tr>
-                            <td>{div.id}</td>
-                            <td>{div.stock}</td>
-                            <td>{div.amount}</td>
-                            <td>{div.date}</td>
-                            <td>
-                                <button onClick={() => DeleteRow(div_index)}>Del</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="table_container">
+                <div className="button_container">
+                    <button className="add" onClick={() => setShowAddModal(true)}>+</button>
+                    <button className="save" onClick={saveData}>Save</button>
+                </div>
+                <div className="table">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Stock ID</th>
+                                <th>Stock Name</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {dividends.map((div, div_index) => (
+                                <tr className={div_index % 2 === 0 ? "even_row" : "odd_row"} key={div_index}>
+                                    <td>#{div_index + 1}</td>
+                                    <td>{div.stock_id}</td>
+                                    <td>{div.stock}</td>
+                                    <td>{div.amount}</td>
+                                    <td>{div.date}</td>
+                                    <td>
+                                        <button onClick={() => DeleteRow(div_index)}>Del</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </>
     );
 }
 
 function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
     const [newRow, setNewRow] = useState({
-        id: dividends.length + 1, // Auto-generate ID based on the current length of dividends
+        ID: dividends.length, // Auto-generate ID based on the current length of dividends
+        stock_id: "", 
         stock: "",
         amount: 0.0,
         date: ""
     });
 
-    const fetchStockName = async (stockId) => {
+    const resetNewRow = () =>{
+        setNewRow({
+            ID: dividends.length,
+            stock_id: "",
+            stock: "",
+            amount: 0.0,
+            date: ""
+        });
+    };
+
+    const fetchStockName = async (stock_id) => {
         try {
-            const response = await fetch(`http://127.0.0.1:5001/api/get_stock_name?id=${stockId}`);
+            const response = await fetch(`http://127.0.0.1:5001/api/get_stock_name?id=${stock_id}`);
             const data = await response.json();
             if (data.stock_name) {
                 return data.stock_name;
             } else {
-                alert("Stock not found.");
+                resetNewRow();
                 return None;
             }
         } catch (error) {
+            resetNewRow();
             alert("Stock not found.");
             console.error("Error fetching stock name:", error);
         }
@@ -123,7 +147,7 @@ function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
 
     const closeModal = () => {
         setShowModal(false);
-        setNewRow({ id: dividends.length + 1, stock: "", amount: 0.0, date: "" }); // Reset form and auto-generate ID
+        resetNewRow(); // Reset form and auto-generate ID
     };
 
     const handleInputChange = (e) => {
@@ -136,23 +160,25 @@ function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
 
     const handleSubmit = async () => {
         // Check if the necessary fields are filled
-        if (!newRow.id || !newRow.amount || !newRow.date) {
+        if (!newRow.stock_id || !newRow.amount || !newRow.date) {
             alert("Please fill out all fields.");
+            resetNewRow();
             return;
         }
-        console.error(newRow.id)
         try {
-            const name = await fetchStockName(newRow.id); // Wait for stock name lookup
+            const name = await fetchStockName(newRow.stock_id); // Wait for stock name lookup
             if (name) {
                 const updatedRow = {
                     ...newRow,
                     stock: name,
+                    ID: dividends.length
                 };
     
                 setDividends([...dividends, updatedRow]); // Add to list
                 closeModal();
             }
         } catch (error) {
+            resetNewRow();
             alert("Error fetching stock name:")
             console.error("Error fetching stock name:", error);
         }
@@ -171,8 +197,8 @@ function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>id</th>
-                                    <th>stock</th>
+                                    <th>stock id</th>
+                                    <th>stock name</th>
                                     <th>amount</th>
                                     <th>date</th>
                                 </tr>
@@ -182,9 +208,9 @@ function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
                                     <td>
                                         <input
                                             type="text"
-                                            name="id"
-                                            placeholder="id"
-                                            value={newRow.id}
+                                            name="stock_id"
+                                            placeholder="stock_id"
+                                            value={newRow.stock_id}
                                             onChange={handleInputChange}
                                         />
                                     </td>

@@ -1,119 +1,96 @@
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh; 
-    width: 100vw;
-    background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+.table_container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure it appears on top */
+    flex-direction: column; /* Stack buttons and table vertically */
+    align-items: center; /* Center horizontally */
+    width: 50%; /* Limit width to 50% of the screen */
+    margin: 0 auto; /* Center it horizontally */
+    max-height: 80vh; /* Limit height of the container to 80% of the viewport */
+    overflow-y: hidden;
 }
 
-.modal .modal_context {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 50vw;
-    height: 15vh;  
-    max-width: 600px; 
-    overflow-y: auto; /* Allow vertical scroll if content exceeds height */
-    position: relative;
-    align-items: center;
-    color: black;
-    gap: 15px;
+.button_container {
+    display: flex;
+    justify-content: flex-end; /* Move buttons to the right */
+    gap: 10px; /* Add spacing between buttons */
+    width: 100%; /* Ensure it spans the full width of .table_container */
+    margin-bottom: 10px; /* Add spacing between buttons and table */
 }
 
-.modal_context table {
+.table_container .table {
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    margin-top: 15px;
-}
-
-.modal_context th, .modal_context td {
-    padding: 12px;
     text-align: center;
+    border-collapse: collapse;
+    overflow-y: auto; /* Add vertical scroll to the table if content exceeds the max-height */
+    
 }
 
-
-.modal_context input {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;  /* Make inputs fill their cells */
+.table_container table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    overflow-y: auto; /* Add vertical scroll to the table if content exceeds the max-height */
+    
 }
 
-.modal .modal_context .close_button {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 25px;
-    color: gray;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.modal .modal_context .submmit_button {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
+.table_container th {
+    background-color: #9a9590;
     color: white;
-    background-color: blue;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
+    padding: 10px;
 }
 
-.modal .modal_context .submmit_button:hover {
-    background-color: #4ca3d8; /* Change color on hover */
+.table_container td, .table_container th {
+    padding: 10px;
+    border: 1px solid #ddd;
+    color: black;
+}
+
+.table_container th {
+    color: white;
+}
+
+.table_container .even_row {
+    background-color: #9a9590;
+}
+
+.table_container .odd_row {
+    background-color: #bebab7;
+}
+
+/* Delete Button Styling */
+button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+button:hover {
+    background-color: darkred;
 }
 
 .horizontal_line {
     width: 100%;
-    border-top: 2px solid grey;
-    margin-top: 30px; 
-    margin-bottom: 3px; 
-    position: relative;
-    z-index: 5; 
+    height: 2px; /* Ensures consistent thickness */
+    background-color: grey; /* More reliable than border */
+    margin-top: 10px; /* Adjust as needed */
+    margin-bottom: 20px; /* Adjust spacing */
 }
 
-.modal_context h2{
-    color: black;
-    margin-bottom: 3px; 
-    padding: 12px;
-    text-align: center;
-}
-
-.modal_context .confirm_button{
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    background-color: red;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    font-size: 24px;
-}
-
-.modal_context .cancel_button{
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
+.button_container .save {
     background-color: green;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    font-size: 24px;
 }
 
-table {
-    align-self: center;
+.button_container .save:hover {
+    background-color: red;
+}
+
+.button_container .add {
+    background-color: #9a9590;
+}
+
+.button_container .add:hover {
+    background-color: darkred;
 }
