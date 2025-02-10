@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
+import "./Login.css"
 
 function CreateLogIn({setifLogIn}) {
     return(
         <>
-        <input type="text" placeholder="account"/>
-        <input type="password " placeholder="password"/>
-        <button onClick={() => setifLogIn(true)}>log in</button>
+        <div className="main_page">
+            <div className="login_container">
+                <input type="text" placeholder="account"/>
+                <input type="password " placeholder="password"/>
+                <button onClick={() => setifLogIn(true)} className="login">log in</button>
+            </div>
+        </div>
         </>
     );
 }

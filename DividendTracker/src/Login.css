@@ -1,0 +1,22 @@
+.main_page {
+    display: flex; /* Ensure it takes up space */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full screen height */
+}
+
+.login_container {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Adds spacing between input fields */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.login_container .login{
+    background-color: blue;
+}

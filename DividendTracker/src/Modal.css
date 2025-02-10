@@ -17,57 +17,55 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 50vw;
-    height: 15vh;  
+    height: auto;  
     max-width: 600px; 
-    overflow-y: auto; /* Allow vertical scroll if content exceeds height */
+    overflow-y: hidden; /* Allow vertical scroll if content exceeds height */
     position: relative;
     align-items: center;
     color: black;
     gap: 15px;
+    display: grid;
+    grid-template-rows: 3vh 2vh 11vh 4vh;
 }
 
 .modal_context table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
-    margin-top: 15px;
 }
 
 .modal_context th, .modal_context td {
-    padding: 12px;
+    font-size: medium;
+    padding: 13px;
+    padding-top: 0;
     text-align: center;
 }
 
 
 .modal_context input {
     padding: 8px;
-    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 100%;  /* Make inputs fill their cells */
 }
 
 .modal .modal_context .close_button {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 25px;
+    justify-self: end;
+    font-size: larger;
     color: gray;
     background-color: transparent;
     border: none;
     cursor: pointer;
-    z-index: 10;
 }
 
 .modal .modal_context .submmit_button {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
     color: white;
+    width: auto;
+    height: auto;
+    justify-self: end;
     background-color: blue;
     border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 8px 15px;
+    font-size: large;
     cursor: pointer;
     border: none;
 }
@@ -79,10 +77,7 @@
 .modal .horizontal_line {
     width: 100%;
     border-top: 2px solid grey;
-    margin-top: 30px; 
-    margin-bottom: 3px; 
     position: relative;
-    z-index: 5; 
 }
 
 .modal_context h2{

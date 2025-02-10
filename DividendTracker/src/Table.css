@@ -1,9 +1,10 @@
 .table_container {
     display: flex;
+    position: fixed;
+    top: 90px;
     flex-direction: column; /* Stack buttons and table vertically */
     align-items: center; /* Center horizontally */
     width: 50%; /* Limit width to 50% of the screen */
-    margin: 0 auto; /* Center it horizontally */
     max-height: 80vh; /* Limit height of the container to 80% of the viewport */
     overflow-y: hidden;
 }
@@ -21,7 +22,6 @@
     text-align: center;
     border-collapse: collapse;
     overflow-y: auto; /* Add vertical scroll to the table if content exceeds the max-height */
-    
 }
 
 .table_container table {
@@ -29,7 +29,6 @@
     text-align: center;
     border-collapse: collapse;
     overflow-y: auto; /* Add vertical scroll to the table if content exceeds the max-height */
-    
 }
 
 .table_container th {
@@ -71,14 +70,6 @@ button:hover {
     background-color: darkred;
 }
 
-.horizontal_line {
-    width: 100%;
-    height: 2px; /* Ensures consistent thickness */
-    background-color: grey; /* More reliable than border */
-    margin-top: 10px; /* Adjust as needed */
-    margin-bottom: 20px; /* Adjust spacing */
-}
-
 .button_container .save {
     background-color: green;
 }
@@ -92,5 +83,34 @@ button:hover {
 }
 
 .button_container .add:hover {
+    background-color: darkred;
+}
+
+.header {
+    display: flex;
+    position: fixed; /* Fixes it at the top */
+    top: 0;
+    left: 0;
+    height: 60px;
+    justify-content: space-between; /* Pushes items to opposite ends */
+    align-items: center; /* Aligns items vertically */
+    width: 100%;
+    padding: 10px 20px; /* Adds spacing for a better look */
+    background-color: #333; /* Optional: Ensure it's visible */
+    margin-bottom: 0;
+}
+
+.header .log_out {
+    position: relative;
+    right: 5%;
+    padding: 8px 12px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.header .log_out:hover {
     background-color: darkred;
 }

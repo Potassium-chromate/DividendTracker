@@ -10,7 +10,9 @@ function App() {
         {!ifLogIn && (<CreateLogIn
           setifLogIn={setifLogIn}
         />)}
-        {ifLogIn && (<CreateTable/>)}
+        {ifLogIn && (<CreateTable
+          setifLogIn={setifLogIn}
+        />)}
       </div>
     );
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Table.css"
 import "./Modal.css"
 
-function CreateTable() {
+function CreateTable({setifLogIn}) {
     const [dividends, setDividends] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
 
@@ -15,8 +15,10 @@ function CreateTable() {
 
     return (
         <>
-            <h1>Dividend Table</h1>
-            <div className="horizontal_line"></div>
+            <div className="header">
+                <h1>Dividend Table</h1>
+                <button className="log_out" onClick={() => setifLogIn(false)}>log out</button>
+            </div>
             {/* Modal to Add New Row */}
             <ShowInputModal
                 showModal={showAddModal}
