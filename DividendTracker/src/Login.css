@@ -23,6 +23,11 @@
 .login_container input{
     font-size: medium;
     margin-bottom: 4px;
+    padding: 10px;
+    height: fit-content;
+    border: none;
+    background-color: #eeeae7;
+    border-bottom: 2px solid #d0cbcb;
 }
 
 .login_and_signup{
@@ -43,4 +48,8 @@
     padding: 6px;
     color: black;
     background-color: transparent;
+}
+
+.login_container h2{
+    font-size: xx-large;
 }

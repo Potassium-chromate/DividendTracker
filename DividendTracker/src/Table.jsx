@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import userIcon from "./images/user.png"
+import logOutIcon from "./images/log_out.png"
+import StaIcon from "./images/Statistic.png"
+import PowerBIReport from "./PowerBi.jsx"
 import "./Table.css"
 import "./Modal.css"
 
-function CreateTable({setifLogIn}) {
+function CreateTable({setifLogIn, loginData}) {
     const [dividends, setDividends] = useState([]);
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showUserMenu, setShowUserMenu] = useState(false);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5001/api/dividends")
+        axios.get("http://127.0.0.1:5001/api/div/dividends")
             .then(response => setDividends(response.data))
             .catch(error => console.error("Error fetching data:", error));
     }, []);
-
+    
     return (
         <>
             <div className="header">
-                <h1>Dividend Table</h1>
-                <button className="log_out" onClick={() => setifLogIn(false)}>log out</button>
+                <h1>Dividend Table</h1> 
+                <img src={userIcon} className="user_icon" onClick={() => setShowUserMenu(!showUserMenu)} width="50" height="50" />
             </div>
+            {/* User menu */}
+            {showUserMenu && (<ShowMenu
+                loginData={loginData}
+                setifLogIn={setifLogIn}
+                setShowUserMenu={setShowUserMenu}
+                />
+            )}
+            
             {/* Modal to Add New Row */}
             <ShowInputModal
                 showModal={showAddModal}
@@ -42,7 +55,7 @@ function CreateTableList({ dividends, setDividends, setShowAddModal}) {
     const [rowToDelete, setRowToDelete] = useState(null); // Store the row index to delete
 
     const saveData = () => {
-        axios.post("http://127.0.0.1:5001/api/save_dividends", { dividends })
+        axios.post("http://127.0.0.1:5001/api/div/save_dividends", { dividends })
             .then(response => {
                 console.log("Data saved successfully:", response.data);
                 alert("Dividends saved to the database!");
@@ -131,7 +144,7 @@ function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
 
     const fetchStockName = async (stock_id) => {
         try {
-            const response = await fetch(`http://127.0.0.1:5001/api/get_stock_name?id=${stock_id}`);
+            const response = await fetch(`http://127.0.0.1:5001/api/div/get_stock_name?id=${stock_id}`);
             const data = await response.json();
             if (data.stock_name) {
                 return data.stock_name;
@@ -272,5 +285,32 @@ function ShowConfirmModal({ showModal, setShowModal, ConfirmDelete }) {
     );
 }
 
+function ShowMenu({loginData, setifLogIn,setShowUserMenu}){
+    const [showChart, setshowChart] = useState(false);
+    return(
+        <>
+            <div className="user_menu">
+                <p>User name: {loginData.account}</p>
+                <div className="menu_button" onClick={() => setshowChart(true)}>
+                    <img src={StaIcon} width="20" height="20"/>
+                    <p>Show Chart (Amount)</p>
+                </div>
+                <div className="menu_button" onClick={() => setifLogIn(false)}>
+                    <img src={logOutIcon} width="20" height="20"/>
+                    <p>Log out</p>
+                </div>
+            </div>
+            <div className="PowerBi_Chart">
+                {showChart && (
+                    <PowerBIReport
+                        showChart={showChart}
+                        setshowChart={setshowChart}
+                    />
+                )}
+            </div>
+        </>
+        
+    );
+}
 
 export default CreateTable;

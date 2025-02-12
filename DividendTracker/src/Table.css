@@ -114,3 +114,44 @@ button:hover {
 .header .log_out:hover {
     background-color: darkred;
 }
+
+
+.header .user_icon{
+    margin-right: 35px;
+    cursor: pointer;
+}
+
+.user_menu{
+    display: grid;
+    gap: 10px;
+    grid-template-rows: auto auto auto;
+    position: absolute;
+    right: 17px;
+    top: 85px;
+    z-index: 10;
+    width: auto;
+    height: auto;
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.user_menu .menu_button{
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    border-radius: 3px;
+    padding: 3px;
+    height: fit-content;
+    cursor: pointer;
+}
+
+.user_menu .menu_button:hover{
+    background-color: #9a9590;
+}
+
+.user_menu img{
+    justify-self: start;
+    padding: 3px;
+}
