@@ -6,7 +6,7 @@ from routes.div_routes import div_bp
 from models import db  # Import shared db instance
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5001", "http://localhost:5173"], methods=["GET", "POST", "OPTIONS"])
+CORS(app, origins=["http://localhost:5001", "http://localhost:5174"], methods=["GET", "POST", "OPTIONS"])
 
 # Load database configuration
 config = Config()
