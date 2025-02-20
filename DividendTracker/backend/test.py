@@ -1,19 +1,23 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.sql import bindparam
 
 # Read the Excel file
-df = pd.read_excel('C:/Users/user/Desktop/股票id.xlsx')
+df = pd.read_excel('股票id.xlsx')
 
 # Convert DataFrame to numpy array and process it
 arr = df.to_numpy()
 result = [element[0].split() for element in arr]
 
 # Database connection details
-Server = "localhost\\SQLEXPRESS"
+Server = "localhost"
 Database = "Data_Base"
 Driver = "ODBC Driver 17 for SQL Server"
-Database_con = f"mssql+pyodbc://@{Server}/{Database}?driver={Driver}"
+Username = "SA"  # Replace with your SQL Server username
+Password = "Eason901215"  # Replace with your SQL Server password
+
+Database_con = f"mssql+pyodbc://{Username}:{Password}@{Server}/{Database}?driver={Driver}&charset=utf8"
 
 # Create SQLAlchemy engine
 engine = create_engine(Database_con)
@@ -51,7 +55,7 @@ def check_connection():
         with engine.connect() as connection:
             print("Database connection successful!")
             insert_stocks()  # Insert the data
-            search_stocks()  # Retrieve and print the data
+            #search_stocks()  # Retrieve and print the data
     except OperationalError as e:
         print(f"Connection failed: {e}")
 

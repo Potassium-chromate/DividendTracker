@@ -12,7 +12,7 @@ function CreateLogIn({setifLogIn, loginData, setLoginData}) {
     };
 
     const logIn = async () => {
-        axios.post("http://127.0.0.1:5001/api/user/LogIn", {
+        axios.post("http://127.0.0.1:5001/LogIn", {
             account: loginData.account,
             password: loginData.password
         })
@@ -22,20 +22,17 @@ function CreateLogIn({setifLogIn, loginData, setLoginData}) {
             return true;
         })
         .catch(error => {
-            if (error.response) {
-                // Access the error message from the server's JSON response
-                alert(error.response.data.error);
-            } else {
-                alert("An unexpected error occurred");
-            }
-            console.error(error);
+            console.error("API request error: ", error.message);
+	    if (error.response) {
+	      console.error("Response error: ", error.response);
+	    }
             setifLogIn(false);
             return false;
         });
     };
     
     const signUp = async () => {
-        axios.post("http://127.0.0.1:5001/api/user/CreateAccount", {
+        axios.post("http://127.0.0.1:5001/CreateAccount", {
             account: loginData.account,
             password: loginData.password
         })
