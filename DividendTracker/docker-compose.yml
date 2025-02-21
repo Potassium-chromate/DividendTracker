@@ -9,6 +9,11 @@ services:
       - "5001:5001"
     environment:
       DATABASE_URL: "mssql+pyodbc://SA:Eason901215!123@192.168.83.4/Data_Base?driver=ODBC+Driver+17+for+SQL+Server"
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_SERVER: ${DB_SERVER}
+      DB_NAME: ${DB_NAME}
+      DB_DRIVER: ${DB_DRIVER}
     networks:
       - app_network
 
