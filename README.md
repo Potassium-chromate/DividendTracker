@@ -8,8 +8,10 @@ This project also serves as a practical exercise to gain hands-on experience wit
 
 ## 🧭 Project Objectives
 **Frontend**: Deliver an intuitive and user-friendly interface that simplifies the input and management of dividend-related data.
+
 **Backend**: Utilize **Flask** for backend development, integrated with **Microsoft SQL Server** for data storage and management, enhancing proficiency in Flask and SQL Server architecture.
-**Containerization**: Use **Docker** to run the frontend and backend in separate containers, ensuring a consistent development environment and simplifying deployment with **Docker Compose** for multi-container orchestration.
+
+**Containerization**: Use **Docker** to run the frontend and backend in separate containers, ensuring a consistent development environment and simplifying deployment with **Docker Compose** for multi-container orchestration. 
 
 ## 📁 Project structure
 ```shell
