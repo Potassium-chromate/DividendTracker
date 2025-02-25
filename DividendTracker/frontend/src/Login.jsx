@@ -12,7 +12,7 @@ function CreateLogIn({setifLogIn, loginData, setLoginData}) {
     };
 
     const logIn = async () => {
-        axios.post("http://127.0.0.1:5001/LogIn", {
+        axios.post("http://127.0.0.1:5001/users/login", {
             account: loginData.account,
             password: loginData.password
         })
@@ -32,7 +32,7 @@ function CreateLogIn({setifLogIn, loginData, setLoginData}) {
     };
     
     const signUp = async () => {
-        axios.post("http://127.0.0.1:5001/CreateAccount", {
+        axios.post("http://127.0.0.1:5001/users/create", {
             account: loginData.account,
             password: loginData.password
         })

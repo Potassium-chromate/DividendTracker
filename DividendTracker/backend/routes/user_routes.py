@@ -3,7 +3,7 @@ from models.user_model import User
 from models import db
 
 def user_api(app): 
-    @app.route("/LogIn", methods=["POST"])
+    @app.route("/users/login", methods=["POST"])
     def logIn():
         data = request.get_json()
         account = data.get('account')
@@ -19,7 +19,7 @@ def user_api(app):
         else:
             return jsonify({"error": "Invalid account or password"}), 401
 
-    @app.route("/CreateAccount", methods=["POST"])
+    @app.route("/users/create", methods=["POST"])
     def create_account():
         data = request.get_json()
         account = data.get('account')

@@ -55,7 +55,7 @@ function CreateTableList({ dividends, setDividends, setShowAddModal}) {
     const [rowToDelete, setRowToDelete] = useState(null); // Store the row index to delete
 
     const saveData = () => {
-        axios.post("http://127.0.0.1:5001/save_dividends", { dividends })
+        axios.post("http://127.0.0.1:5001/dividends", { dividends })
             .then(response => {
                 console.log("Data saved successfully:", response.data);
                 alert("Dividends saved to the database!");
@@ -144,7 +144,7 @@ function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
 
     const fetchStockName = async (stock_id) => {
         try {
-            const response = await fetch(`http://127.0.0.1:5001/get_stock_name?id=${stock_id}`);
+            const response = await fetch(`http://127.0.0.1:5001/stocks/${stock_id}`);
             const data = await response.json();
             if (data.stock_name) {
                 return data.stock_name;
