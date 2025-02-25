@@ -42,3 +42,49 @@ DividendTracker
 │
 └── docker-compose.yml           # Docker Compose file for multi-container setup
 ```
+## 🚀 How to Use This Project
+
+### ✅ Step 1: Clone the Repository
+First, clone the project to your local machine using `git`:
+```sh
+git clone https://github.com/Potassium-chromate/DividendTracker.git
+cd DividendTracker
+```
+## 🐳 Step 2: Build and Run with Docker Compose
+Use **Docker Compose** to build and start the application:
+```sh
+docker compose up --build
+```
+- The **--build** flag ensures that Docker images are rebuilt if there are any changes in the code or Dockerfile.
+- Docker Compose will handle building images, creating containers, and setting up networks automatically.
+
+## 🌐 Step 3: Access the Application
+Once Docker finishes building and running the containers, you can access the app:
+
+- **Backend API:**
+Typically available at:
+```sh
+http://localhost:5001
+```
+- **Frontend App:**
+If the frontend is included in the Docker setup, it may be running on:
+```sh
+http://localhost:3000
+```
+
+(Adjust the ports if your Docker configuration uses different ones.)
+## 🔄 Step 4: Stopping the Application
+To stop the running containers, press `Ctrl + C` in the terminal where Docker Compose is running. Then, clean up the containers with:
+```sh
+docker compose down
+```
+## 🛠 Step 5: Rebuilding After Changes
+If you make code changes and need to rebuild:
+```sh
+docker compose up --build
+```
+## ⚡ Checking Running Containers
+To see the running Docker containers:
+```sh
+docker ps
+```
