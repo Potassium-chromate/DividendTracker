@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend-pod
+  labels:
+    app: dividend-backend
+spec:
+  containers:
+  - name: backend
+    image: eason20011215/dividendtracker-backend:v1
+    ports:
+    - containerPort: 5001
+    envFrom:
+    - configMapRef:
+        name: backend-config    # reference by ConfigMap name, not file name
+    - secretRef:
+        name: backend-secret    # same: name of Secret, not .yml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: dividend-backend
+  ports:
+  - port: 80
+    targetPort: 5001
+  type: NodePort
+

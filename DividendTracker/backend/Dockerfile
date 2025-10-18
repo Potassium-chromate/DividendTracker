@@ -9,11 +9,15 @@ RUN apt-get update && apt-get install -y \
     curl \
     gnupg2 \
     lsb-release \
-    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o /etc/apt/keyrings/microsoft.asc \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.asc] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" \
+        | tee /etc/apt/sources.list.d/mssql-release.list \
     && apt-get update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql17 \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Install Python dependencies
 COPY requirements.txt .
@@ -30,4 +34,3 @@ EXPOSE 5001
 
 # Command to run the app
 CMD ["python", "main.py"]
-
