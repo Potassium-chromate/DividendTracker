@@ -8,7 +8,10 @@ from datetime import timedelta
 
 config = Config()
 app = Flask(__name__)
-CORS(app)
+CORS(app,
+	origins=["http://localhost:5173",
+	         "http://192.168.83.4:5173"],
+	supports_credentials=True)
 
 # Load database configuration
 

@@ -1,9 +1,8 @@
-from flask import request, jsonify, g
+from flask import request, jsonify, g, session
 from models.dividends_model import Dividends
 from models.stocks_model import Stocks
 from models import db
 from routes.auth import login_required
-
 
 def div_api(app):
     @app.route("/hello", methods=["GET"])
@@ -14,6 +13,8 @@ def div_api(app):
     @app.route("/dividends", methods=["GET"])
     @login_required
     def get_dividends():
+        if 'user_account' not in session:
+            return jsonify({"error": "Not logged in"}), 401
         # return only dividends belonging to the authenticated user
         dividends = Dividends.query.filter_by(User_Account=g.user.Account).all()
         return jsonify([
