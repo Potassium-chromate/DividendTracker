@@ -1,7 +1,8 @@
-from flask import request, jsonify
+from flask import request, jsonify, g
 from models.dividends_model import Dividends
 from models.stocks_model import Stocks
 from models import db
+from routes.auth import login_required
 
 
 def div_api(app):
@@ -11,8 +12,10 @@ def div_api(app):
 
     # Retrieve all dividends
     @app.route("/dividends", methods=["GET"])
+    @login_required
     def get_dividends():
-        dividends = Dividends.query.all()
+        # return only dividends belonging to the authenticated user
+        dividends = Dividends.query.filter_by(User_Account=g.user.Account).all()
         return jsonify([
             {
                 "id": d.ID,
@@ -26,20 +29,22 @@ def div_api(app):
 
     # Create (save) new dividends
     @app.route("/dividends", methods=["POST"])
+    @login_required
     def create_dividends():
         data = request.get_json()
         if not data or "dividends" not in data:
             return jsonify({"error": "Invalid input"}), 400
         
         try:
-            # Clear existing data (if business logic requires)
-            db.session.query(Dividends).delete()
+            # Clear existing data for this user only
+            db.session.query(Dividends).filter_by(User_Account=g.user.Account).delete()
 
-            # Add new dividends
+            # Add new dividends tied to this user
             for item in data["dividends"]:
                 new_dividend = Dividends(
                     Stock_ID=item["stock_id"],
                     Stock_name=item["stock"],
+                    User_Account=g.user.Account,
                     Amount=float(item["amount"]),
                     Date=item["date"]
                 )

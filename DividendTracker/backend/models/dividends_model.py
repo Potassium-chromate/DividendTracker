@@ -6,5 +6,7 @@ class Dividends(db.Model):
     ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Stock_ID =  db.Column(db.String(50), nullable=False)
     Stock_name =  db.Column(db.Unicode(50), nullable=False)
+    # associate dividend with a user account (must match Users.Account)
+    User_Account = db.Column(db.String(100), db.ForeignKey('Users.Account'), nullable=False)
     Amount =  db.Column(Float, unique=False)
     Date =  db.Column(db.String(50), nullable=False)

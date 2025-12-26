@@ -4,6 +4,7 @@ from config import Config
 from models import db
 from routes.user_routes import user_api
 from routes.div_routes import div_api
+from datetime import timedelta
 
 config = Config()
 app = Flask(__name__)
@@ -13,6 +14,11 @@ CORS(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = config.config()  # Use one database connection
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Avoid warnings
+app.config["SECRET_KEY"] = "請改成強隨機字串，正式環境用環境變數"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = False  # 上線 HTTPS 改 True
 
 # Initialize SQLAlchemy with Flask app
 db.init_app(app)
