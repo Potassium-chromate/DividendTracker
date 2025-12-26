@@ -12,44 +12,48 @@ function CreateLogIn({setifLogIn, loginData, setLoginData}) {
     };
 
     const logIn = async () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
-            account: loginData.account,
-            password: loginData.password
-        })
-        .then(response => {
-            console.log("Log in successfully");
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}/users/login`,
+                {
+                    account: loginData.account,
+                    password: loginData.password,
+                },
+                { withCredentials: true }
+            );
+            console.log("Log in successfully", response.data);
             setifLogIn(true);
             return true;
-        })
-        .catch(error => {
-            console.error("API request error: ", error.message);
-	    if (error.response) {
-	      console.error("Response error: ", error.response);
-	    }
+        } catch (error) {
+            console.error("API request error: ", error);
+            if (error.response && error.response.data && error.response.data.error) {
+                alert(error.response.data.error);
+            }
             setifLogIn(false);
             return false;
-        });
+        }
     };
     
     const signUp = async () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/users/create`, {
-            account: loginData.account,
-            password: loginData.password
-        })
-        .then(response => {
-            console.log("Sign up successfully");
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}/users/create`,
+                {
+                    account: loginData.account,
+                    password: loginData.password,
+                }
+            );
+            console.log("Sign up successfully", response.data);
             return true;
-        })
-        .catch(error => {
-            if (error.response) {
-                // Access the error message from the server's JSON response
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.error) {
                 alert(error.response.data.error);
             } else {
                 alert("An unexpected error occurred");
             }
             console.error(error);
             return false;
-        });
+        }
     };
     
 

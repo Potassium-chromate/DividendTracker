@@ -13,7 +13,7 @@ function CreateTable({setifLogIn, loginData}) {
     const [showUserMenu, setShowUserMenu] = useState(false);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API_URL}/dividends`)
+        axios.get(`${import.meta.env.VITE_API_URL}/dividends`, { withCredentials: true })
             .then(response => setDividends(response.data))
             .catch(error => console.error("Error fetching data:", error));
     }, []);
@@ -55,7 +55,7 @@ function CreateTableList({ dividends, setDividends, setShowAddModal}) {
     const [rowToDelete, setRowToDelete] = useState(null); // Store the row index to delete
 
     const saveData = () => {
-        axios.post(`${import.meta.env.VITE_API_URL}/dividends`, { dividends })
+        axios.post(`${import.meta.env.VITE_API_URL}/dividends`, { dividends }, { withCredentials: true })
             .then(response => {
                 console.log("Data saved successfully:", response.data);
                 alert("Dividends saved to the database!");
@@ -144,13 +144,12 @@ function ShowInputModal({ showModal, setShowModal, dividends, setDividends }) {
 
     const fetchStockName = async (stock_id) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/stocks/${stock_id}`);
-            const data = await response.json();
-            if (data.stock_name) {
-                return data.stock_name;
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/stocks/${stock_id}`, { withCredentials: true });
+            if (response.data.stock_name) {
+                return response.data.stock_name;
             } else {
                 resetNewRow();
-                return None;
+                return null;
             }
         } catch (error) {
             resetNewRow();
