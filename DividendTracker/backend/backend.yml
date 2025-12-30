@@ -7,7 +7,8 @@ metadata:
 spec:
   containers:
   - name: backend
-    image: eason20011215/dividendtracker-backend:v1
+    image: eason20011215/dividendtracker-backend:v1.5
+    imagePullPolicy: Always
     ports:
     - containerPort: 5001
     envFrom:

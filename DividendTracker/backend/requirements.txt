@@ -8,3 +8,4 @@ packaging==24.2
 pandas==2.2.3
 pyodbc==5.2.0
 SQLAlchemy==2.0.38
+python-dotenv==1.2.1
