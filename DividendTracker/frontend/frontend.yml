@@ -1,19 +1,25 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: frontend-pod
+  name: frontend-deployment
   labels:
     app: dividend-frontend
 spec:
-  containers:
-  - name: frontend
-    image: eason20011215/dividendtracker-frontend:v1.4
-    imagePullPolicy: Never
-    ports:
-    - containerPort: 3000
-    #envFrom:
-    #- configMapRef:
-        #name: frontend-config  # Reference the ConfigMap created earlier
+  replicas: 1         # number of pods
+  selector:
+    matchLabels:      
+      app: dividend-frontend
+  template:           # --- 從這裡以下，就是你原本的 Pod 內容 ---
+    metadata:
+      labels:         # 這個標籤必須跟上面的 matchLabels 一樣
+        app: dividend-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: eason20011215/dividendtracker-frontend:v1.4
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
 ---
 apiVersion: v1
 kind: Service
