@@ -1,21 +1,28 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: backend-pod
-  labels:
-    app: dividend-backend
+  name: backend-deployment
 spec:
-  containers:
-  - name: backend
-    image: eason20011215/dividendtracker-backend:v1.5
-    imagePullPolicy: Always
-    ports:
-    - containerPort: 5001
-    envFrom:
-    - configMapRef:
-        name: backend-config    # reference by ConfigMap name, not file name
-    - secretRef:
-        name: backend-secret    # same: name of Secret, not .yml
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dividend-backend
+  template:
+    metadata:
+      labels:
+        app: dividend-backend
+    spec:
+      containers:
+      - name: backend
+        image: eason20011215/dividendtracker-backend:v1.5
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5001
+        envFrom:
+        - configMapRef:
+            name: backend-config
+        - secretRef:
+            name: backend-secret
 ---
 apiVersion: v1
 kind: Service
@@ -28,4 +35,3 @@ spec:
   - port: 80
     targetPort: 5001
   type: NodePort
-
