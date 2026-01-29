@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: eason20011215/dividendtracker-frontend:v1.4
-        imagePullPolicy: Never
+        image: eason20011215/dividendtracker-frontend:v1.5
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
 ---

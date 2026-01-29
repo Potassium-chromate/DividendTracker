@@ -3,5 +3,4 @@ kind: ConfigMap
 metadata:
   name: frontend-config
 data:
-  VITE_API_URL: http://192.168.58.2:32421
-
+  VITE_API_URL: http://dividend.local
