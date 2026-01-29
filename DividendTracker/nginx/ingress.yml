@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dividend-ingress
+  annotations:
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: dividend.local  # 我們自己取的假網域
+    http:
+      paths:
+      # --- 後端路由區 (Backend) ---
+      # 捕捉 /users 開頭的所有請求
+      - path: /users
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 80
+      # 捕捉 /dividends 開頭的所有請求
+      - path: /dividends
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 80
+              
+      - path: /stocks
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 80
+      
+      # --- 前端路由區 (Frontend) ---
+      # 其他所有東西都給前端
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 85

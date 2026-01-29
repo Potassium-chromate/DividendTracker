@@ -31,4 +31,4 @@ spec:
   ports:
   - port: 85
     targetPort: 3000
-  type: NodePort
+  type: ClusterIP

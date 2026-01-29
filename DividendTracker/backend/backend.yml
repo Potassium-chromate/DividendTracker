@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: eason20011215/dividendtracker-backend:v1.5
+        image: eason20011215/dividendtracker-backend:v1.6
         imagePullPolicy: Always
         ports:
         - containerPort: 5001
@@ -34,4 +34,4 @@ spec:
   ports:
   - port: 80
     targetPort: 5001
-  type: NodePort
+  type: ClusterIP

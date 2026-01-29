@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secreat Information
+.env
+
+## cache
+__pycache__
+.pytest_cache
