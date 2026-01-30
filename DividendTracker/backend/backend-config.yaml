@@ -6,4 +6,4 @@ data:
   DB_SERVER: "mssql-service,1433"
   DB_NAME: "master"
   DB_DRIVER: "ODBC Driver 17 for SQL Server"
-
+  SSL_ENABLE: "false"

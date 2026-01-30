@@ -3,8 +3,13 @@ kind: Ingress
 metadata:
   name: dividend-ingress
   annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+      - dividend.local
+    secretName: dividend-tls
   rules:
   - host: dividend.local  # 我們自己取的假網域
     http:

@@ -1,0 +1,23 @@
+# === secure ===
+*.key
+*.pem
+*.crt
+*.pfx
+.env
+.env.*
+
+# === trash ===
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+README.md
+
+# === Python related ===
+__pycache__
+*.pyc
+*.pyo
+venv/
+.venv/
+.pytest_cache/

@@ -1,3 +1,9 @@
 *_test.py
+
+# Security related
+*.key
+*.pem
+*.crt
+*.pfx
 backend-secret.yaml
 .env
