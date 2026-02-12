@@ -32,6 +32,6 @@ jobs:
           # Points to the Dockerfile inside that directory
           file: DividendTracker/frontend/Dockerfile
           push: true
-          tags: ｜
+          tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/dividendtracker-frontend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/dividendtracker-frontend:${{ github.sha }}
