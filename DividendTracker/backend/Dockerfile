@@ -1,11 +1,25 @@
-# Use an appropriate base image
-FROM python:3.10-slim
+FROM python:3.10-slim AS builder
 
-# Install system dependencies for pyodbc and the ODBC Driver for SQL Server
+# Install build tools required for compiling Python C-extensions (like pyodbc)
 RUN apt-get update && apt-get install -y \
-    unixodbc-dev \
     gcc \
     g++ \
+    unixodbc-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a virtual environment to isolate the installed packages
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies into the virtual environment
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+FROM python:3.10-slim
+
+# Install ONLY the runtime dependencies: the Microsoft SQL Server ODBC Driver
+# Notice we DO NOT install gcc or g++ here!
+RUN apt-get update && apt-get install -y \
     curl \
     gnupg2 \
     lsb-release \
@@ -18,16 +32,17 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy the completely built virtual environment from the builder stage
+COPY --from=builder /opt/venv /opt/venv
 
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the app code
-COPY . /app
+# Activate the virtual environment
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Set the working directory
 WORKDIR /app
+
+# Copy the rest of the application code
+COPY . /app
 
 # Expose the application port
 EXPOSE 5001
