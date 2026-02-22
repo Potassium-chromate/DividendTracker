@@ -35,5 +35,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/dividendtracker-frontend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/dividendtracker-frontend:${{ github.sha }}
-          build-args: |
-            VITE_API_URL=http://dividend.local
