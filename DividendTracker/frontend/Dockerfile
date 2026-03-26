@@ -1,6 +1,6 @@
 # Stage 1: Build the application
 # Use specific Node.js version for building to ensure consistency
-FROM node:18 AS builder
+FROM node:20 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -20,7 +20,7 @@ RUN npm run build
 
 # Stage 2: Serve the application
 # Use a lightweight Alpine image to reduce the final image size
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set working directory for the runtime container
 WORKDIR /app

@@ -42,7 +42,8 @@ export default function BasicTableOne() {
       setTempValue(filter[column]);
     }
   };                                         
-  const { isOpen, openModal, closeModal } = useModal();                                                   
+  //const { isOpen, openModal, closeModal } = useModal();                                                   
+  const { openModal } = useModal();   
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/dividends`, { withCredentials: true })
         .then(response => setSourceTableData(response.data))
