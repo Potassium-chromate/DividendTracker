@@ -5,7 +5,7 @@ from models import db
 from werkzeug.security import generate_password_hash
 
 def user_api(app): 
-    @app.route("/users/login", methods=["POST"])
+    @app.route("/users/signin", methods=["POST"])
     def logIn():
         data = request.get_json()
         account = data.get('account')
@@ -23,7 +23,7 @@ def user_api(app):
 
         return jsonify({"message": "Login successful"}), 200
 
-    @app.route("/users/create", methods=["POST"])
+    @app.route("/users/signup", methods=["POST"])
     def create_account():
         data = request.get_json()
         account = data.get('account')
@@ -48,4 +48,17 @@ def user_api(app):
     def logout():
         session.clear()  # 或 session.pop("user_account", None)
         return jsonify({"message": "Logged out"}), 200
+        
+    @app.route("/users/check-auth", methods=["GET"])
+    def check_auth():
+        # 檢查 session 中是否有 'user_account'
+        if "user_account" in session:
+            # 有的話代表 Cookie 有效且未過期
+            return jsonify({
+                "message": "Authenticated", 
+                "account": session["user_account"]
+            }), 200
+        else:
+            # 沒有的話代表未登入或已過期
+            return jsonify({"error": "Unauthorized"}), 401
 

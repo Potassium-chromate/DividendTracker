@@ -23,7 +23,8 @@ def div_api(app):
                 "stock_id": d.Stock_ID,
                 "stock": d.Stock_name,
                 "amount": d.Amount,
-                "date": d.Date
+                "date": d.Date,
+                "owner": d.User_Account
             }
             for d in dividends
         ]), 200
