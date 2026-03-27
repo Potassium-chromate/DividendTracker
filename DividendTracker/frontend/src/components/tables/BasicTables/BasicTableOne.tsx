@@ -8,7 +8,7 @@ import {
 } from "../../ui/table";
 import { useEffect, useState, useMemo} from "react";
 import { useModal } from "../../../hooks/useModal";
-//import Badge from "../../ui/badge/Badge";
+import EditModal from "./EditModal";
 
 interface Order {
   id: number;
@@ -42,14 +42,17 @@ export default function BasicTableOne() {
       setTempValue(filter[column]);
     }
   };                                         
-  //const { isOpen, openModal, closeModal } = useModal();                                                   
-  const { openModal } = useModal();   
+  // Variable related to edit modal
+  const { isOpen, openModal, closeModal } = useModal();
+  const [ currentRowId, setCurrentRowId] = useState<number| null>(null);
+                            
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/dividends`, { withCredentials: true })
         .then(response => setSourceTableData(response.data))
         .catch(error => alert("Error fetching data: " + error));
   }, []);
 
+  // Update the data in table base on the filter condition
   const filteredTableData = useMemo(() => {
     return sourceTableData.filter((element) => {
       const matchStockId = filter.stock_id === "" || element.stock_id.includes(filter.stock_id);
@@ -316,7 +319,7 @@ export default function BasicTableOne() {
                 </TableCell>
                 <TableCell>
                   <button
-                    onClick={openModal}
+                    onClick={() => {openModal(); setCurrentRowId(order.id); console.log(sourceTableData)}}
                     className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"
                   >
                     <svg
@@ -342,6 +345,13 @@ export default function BasicTableOne() {
           </TableBody>
         </Table>
       </div>
+      <EditModal
+        isOpen = {isOpen}
+        closeModal = {closeModal}
+        currentRowId = {currentRowId}
+        sourceTableData = {sourceTableData}
+        setSourceTableData = {setSourceTableData}
+      />
     </div>
   );
 } 

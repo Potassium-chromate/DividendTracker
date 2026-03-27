@@ -29,7 +29,7 @@ export default function SignInForm() {
       );
       
       // 登入成功：更新 Context 狀態
-      console.log("登入成功", response.data);
+      console.log("登入成功", response.data.message);
       setIfLogIn(true);
       setCurrentUser(response.data.account);
       

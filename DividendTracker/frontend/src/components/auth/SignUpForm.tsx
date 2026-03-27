@@ -27,7 +27,7 @@ export default function SignUpForm() {
         { withCredentials: true }
       );
       
-      alert("註冊成功: " + response.data);
+      alert("註冊成功: " + response.data.message);
       setCurrentUser(response.data.account);
       // 強制將畫面跳轉回首頁或 Dashboard
       navigate("/signin");
