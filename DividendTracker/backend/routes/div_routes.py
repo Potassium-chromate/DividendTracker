@@ -57,7 +57,46 @@ def div_api(app):
         except Exception as e:
             db.session.rollback()
             return jsonify({"error": str(e)}), 500
+	
+	# Revise didideneds record
+    @app.route("/dividends", methods=["PUT"])
+    @login_required
+    def update_dividends():
+        data = request.get_json()
+        # Validate that the incoming data is a non-empty list
+        if not data or not isinstance(data, list):
+            return jsonify({"error": "Invalid input, expected a list of records"}), 400
+            
+        try:
+            for item in data: 
+                # Ensure the owner in the payload matches the currently authenticated user
+                if item.get("owner") != g.user.Account:
+                    return jsonify({"error": "Unauthorized operation: owner mismatch"}), 403
+                # Query the database for the specific record belonging to this user
+                record = Dividends.query.filter_by(
+                    ID=item.get("id"), 
+                    User_Account=g.user.Account
+                ).first()
 
+                # Abort if the record does not exist or unauthorized access is attempted
+                if not record:
+                    return jsonify({"error": f"Record ID {item.get('id')} not found or unauthorized"}), 404
+
+                # Apply the updated values (fallback to the original value if not provided)
+                record.Stock_ID = item.get("stock_id", record.Stock_ID)
+                record.Stock_name = item.get("stock", record.Stock_name)
+                record.Amount = item.get("amount", record.Amount)
+                record.Date = item.get("date", record.Date)
+            
+            # Commit all changes to the database in a single transaction
+            db.session.commit()
+            return jsonify({"message": "Dividends updated successfully"}), 200
+
+        except Exception as e:
+            # Rollback the transaction to maintain data integrity if any error occurs
+            db.session.rollback()
+            return jsonify({"error": "Internal server error", "details": str(e)}), 500        
+	
     # Retrieve stock details by Stock ID
     @app.route("/stocks/<string:id>", methods=["GET"])
     def get_stock_by_id(id):
