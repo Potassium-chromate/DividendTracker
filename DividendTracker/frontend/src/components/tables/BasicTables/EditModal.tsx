@@ -29,7 +29,7 @@ export default function EditModal({isOpen, closeModal, currentRowId, sourceTable
 
 	//Alarm message of inconsistant between stock id and stock name
 	const [alarmMessage, setAlarmMessage] = useState<string>("");
-	const [ifConsistent, setIfConsistent] =useState<boolean>(true);
+	const [ifConsistent, setIfConsistent] =useState<boolean | null>(null);
 
 	useEffect(() => {
     if (!isOpen) setAlarmMessage("");
@@ -78,25 +78,26 @@ export default function EditModal({isOpen, closeModal, currentRowId, sourceTable
     const currentStockName = formData.get("stock"); // 你的 input name 是 "stock"
 
 		try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/stocks/${stockId}`,
-        { withCredentials: true }
-      );
+		const response = await axios.get(
+			`${import.meta.env.VITE_API_URL}/stocks/${stockId}`,
+			{ withCredentials: true }
+		);
 			
-			const correctName = response.data.stock_name;
-			// 檢查使用者填入的股票名稱是否與股票代碼相互批配
-			if (correctName !== currentStockName){
-        setAlarmMessage(`偵測到名稱不一致，已自動將 [${currentStockName}] 修正為 [${correctName}]`);
-        setIfConsistent(false);
-        const stockInput = formRef.current.elements.namedItem("stock") as HTMLInputElement;
-        if (stockInput) {
-          stockInput.value = correctName;
-        }
-      } else {
-				setIfConsistent(true);
-        setAlarmMessage("✅ 股票名稱與代碼完全相符！");
+		const correctName = response.data.stock_name;
+		// 檢查使用者填入的股票名稱是否與股票代碼相互批配
+		if (correctName !== currentStockName){
+			setAlarmMessage(`偵測到名稱不一致，已自動將 [${currentStockName}] 修正為 [${correctName}]`);
+      setIfConsistent(false);
+      const stockInput = formRef.current.elements.namedItem("stock") as HTMLInputElement;
+      if (stockInput) {
+        stockInput.value = correctName;
+      }
+    } else {
+			setIfConsistent(true);
+      setAlarmMessage("✅ 股票名稱與代碼完全相符！");
       }
     } catch (error: any) {
+			setIfConsistent(false);
       console.error("API 請求錯誤: ", error);
       setAlarmMessage(`❌ 查無股票代碼: ${stockId}`);
     }
@@ -145,17 +146,20 @@ export default function EditModal({isOpen, closeModal, currentRowId, sourceTable
 								</div>
 							</div>
 						</div>
-						<div 
+						<>{(ifConsistent !== null && alarmMessage) &&(
+							<div 
 							className={`px-4 py-3 mt-4 text-sm font-medium rounded-lg border flex items-center gap-2 transition-colors ${
 								ifConsistent 
 									? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20" 
 									: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20"
 							}`}
-						>
-							<span className={ifConsistent ? "text-teal-500" : "text-rose-400"}>
-								{alarmMessage}
-							</span>
-						</div>
+							>
+								<span className={ifConsistent ? "text-teal-500" : "text-rose-400"}>
+									{alarmMessage}
+								</span>
+							</div>
+							)}
+						</>
 						<div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
 							<Button size="sm" variant="outline" onClick={closeModal}>
 								Close
