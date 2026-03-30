@@ -12,8 +12,9 @@ export default function SignInForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [account, setAccount] = useState<String>();
-  const [password, setPassword] = useState<String>();
+  const [account, setAccount] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const {setIfLogIn, setCurrentUser} = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,9 +41,9 @@ export default function SignInForm() {
       console.error("API 請求錯誤: ", error);
       // 捕捉後端回傳的錯誤訊息並顯示在畫面上
       if (error.response?.data?.error) {
-        alert(error.response.data.error);
+        setErrorMessage(error.response.data.error);
       } else {
-        alert("登入失敗，請檢查伺服器連線");
+        setErrorMessage("登入失敗，請檢查伺服器連線");
       }
     }
   };
@@ -168,6 +169,17 @@ export default function SignInForm() {
                     Forgot password?
                   </Link>
                 </div>
+                {/* <!-- Error Message grid --> */}
+                <>{(errorMessage !== null) && (
+                  <div 
+                  className="px-4 py-3 mt-4 text-sm font-medium rounded-lg border flex items-center gap-2 transition-colors bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20"
+                  >
+                    <span className="text-rose-400">
+                      {errorMessage}
+                    </span>
+                  </div>
+                )}
+                </>
                 <div>
                   <Button className="w-full" size="sm" type="submit">
                     Sign in
